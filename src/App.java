@@ -1,22 +1,16 @@
-import javax.print.attribute.standard.PrinterMakeAndModel;
-
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
  
 public class App extends Application {
+    private UIAssemblyHelper uiAssemblyHelper = new UIAssemblyHelper();
     private TableView assignmentTable = new TableView();
+    private TableView todayTable = new TableView();
 
     public static void main(String[] args) {
         launch(args);
@@ -26,29 +20,19 @@ public class App extends Application {
     public void start(Stage primaryStage) {
         Scene scene = new Scene(new Group());
         primaryStage.setTitle("Assignments & Planner");
-        primaryStage.setWidth(300);
-        primaryStage.setHeight(500);
+        primaryStage.setWidth(1280);
+        primaryStage.setHeight(720);
 
-        final Label label = new Label("Assignment List");
-        label.setFont(new Font("Arial", 20));
+        VBox assigmentTableVBox = uiAssemblyHelper.assignmentTableMaker(assignmentTable);
+        VBox todayTableVBox = uiAssemblyHelper.todayTableMaker(todayTable);
 
-        assignmentTable.setEditable(false);
+        final HBox elements = new HBox();
+        elements.setSpacing(5);
+        elements.setPadding(new Insets(20,0,0,20));
+        elements.getChildren().addAll(assigmentTableVBox, todayTableVBox);
 
-        TableColumn assignmentNameCol = new TableColumn("Assignment Name");
-        TableColumn assignmentAssignedDateCol = new TableColumn("Assigned Date");
-        TableColumn assignmentDueDateCol = new TableColumn("Due Date");
-        TableColumn assignmentEstiamtedHoursOfWorkCol = new TableColumn("Total Time");
-        TableColumn assignmentTimeSpentCol = new TableColumn("Time Spent");
-        TableColumn AssignmentViewedCol = new TableColumn("Started");
+        ((Group) scene.getRoot()).getChildren().addAll(elements);
 
-        assignmentTable.getColumns().addAll(assignmentNameCol, assignmentAssignedDateCol, assignmentDueDateCol, assignmentEstiamtedHoursOfWorkCol, assignmentTimeSpentCol, AssignmentViewedCol);
-
-        final VBox vbox = new VBox();
-        vbox.setSpacing(5);
-        vbox.setPadding(new Insets(10,0,0,10));
-        vbox.getChildren().addAll(label, assignmentTable);
-
-        ((Group) scene.getRoot()).getChildren().addAll(vbox);
 
         primaryStage.setScene(scene);
         primaryStage.show();
